@@ -4,7 +4,7 @@ namespace Jakmall\Recruitment\Calculator\Commands;
 
 use Illuminate\Console\Command;
 
-class AddCommand extends Command
+abstract class ParentCommand extends Command
 {
     /**
      * @var string
@@ -15,9 +15,25 @@ class AddCommand extends Command
      * @var string
      */
     protected $description;
+    
+    /**
+     * @var string
+     */
+    protected $operator;
+
+    /**
+     * @var string
+     */
+    protected $command_verb;
+
+    /**
+     * @var string
+     */
+    protected $passive_verb;
 
     public function __construct()
     {
+        
         $commandVerb = $this->getCommandVerb();
 
         $this->signature = sprintf(
@@ -26,21 +42,28 @@ class AddCommand extends Command
             $this->getCommandPassiveVerb()
         );
         $this->description = sprintf('%s all given Numbers', ucfirst($commandVerb));
+        parent::__construct();
     }
 
     protected function getCommandVerb(): string
     {
-        return 'add';
+        return $this->command_verb;
     }
 
     protected function getCommandPassiveVerb(): string
     {
-        return 'added';
+        return $this->passive_verb;
     }
 
     public function handle(): void
     {
         $numbers = $this->getInput();
+
+        if(count($numbers) < 1){
+            $this->comment(sprintf('Argument needed'));
+            return;
+        }
+
         $description = $this->generateCalculationDescription($numbers);
         $result = $this->calculateAll($numbers);
 
@@ -62,33 +85,17 @@ class AddCommand extends Command
 
     protected function getOperator(): string
     {
-        return '+';
+        return $this->operator;
     }
 
-    /**
-     * @param array $numbers
-     *
-     * @return float|int
-     */
-    protected function calculateAll(array $numbers)
-    {
-        $number = array_pop($numbers);
+    protected function calculateAll(array $numbers){
+        $sum = 0;
 
-        if (count($numbers) <= 0) {
-            return $number;
+        foreach($numbers as $number){
+            $sum = $this->calculate($sum,$number);
         }
 
-        return $this->calculate($this->calculateAll($numbers), $number);
+        return $sum;
     }
-
-    /**
-     * @param int|float $number1
-     * @param int|float $number2
-     *
-     * @return int|float
-     */
-    protected function calculate($number1, $number2)
-    {
-        return $number1 + $number2;
-    }
+    
 }
