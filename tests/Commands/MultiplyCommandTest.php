@@ -28,7 +28,7 @@ final class MultiplyCommandTest extends ParentTester
     public function testNegativeNumber(): void
     {   
         $this->assertEquals('-1 * 5 = -5',$this->rawCommand(array('numbers' => array(-1,5))));
-        $this->assertEquals('21 * -2 = -42',$this->rawCommand(array('numbers' => array(21,-11))));
+        $this->assertEquals('21 * -2 = -42',$this->rawCommand(array('numbers' => array(21,-2))));
     }
 
     public function testSequenceNumbers(): void
