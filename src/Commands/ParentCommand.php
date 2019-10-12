@@ -2,6 +2,7 @@
 
 namespace Jakmall\Recruitment\Calculator\Commands;
 
+use Jakmall\Recruitment\Calculator\Logger;
 use Illuminate\Console\Command;
 
 abstract class ParentCommand extends Command
@@ -35,6 +36,11 @@ abstract class ParentCommand extends Command
      * @var array
      */
     protected $input_arg;
+
+    /**
+     * @var bool
+     */
+    public $log_command = true;
 
     public function __construct()
     {
@@ -87,8 +93,18 @@ abstract class ParentCommand extends Command
 
         $description = $this->generateCalculationDescription($numbers);
         $result = $this->calculateAll($numbers);
+        $output = sprintf('%s = %s', $description, $result);
 
-        $this->comment(sprintf('%s = %s', $description, $result));
+        if($this->log_command){
+            Logger::writeLog(array(
+                "command" => ucfirst($this->getCommandVerb()),
+                "description" => $description,
+                "result" => $result,
+                "output" => $output
+            ));
+        }
+
+        $this->comment($output);
     }
 
 
