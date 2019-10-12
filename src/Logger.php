@@ -10,8 +10,32 @@ class Logger{
         file_put_contents(self::$filename,json_encode($data)."\n",FILE_APPEND);
     }
 
-    public function readLog(){
+    public function readLog(array $filter = array()): array{
+        $data = array();
+    
+        $handler = fopen(self::$filename,"r");
+        
+        if($handler){
+            $no = 1;
+            while(($line = fgets($handler)) !== false){
+                $log = json_decode($line,true);
+                
+                if( (empty($filter)) || 
+                    (in_array(strtolower($log["command"]),$filter))
+                  )
+                {
+                    
+                    $data[] = array_merge([$no],$log);
+                    $no++;
+                }
+            }
 
+            fclose($handler);
+
+        }
+
+        return $data;
     }
+
 
 }
