@@ -10,7 +10,7 @@ final class SubstractCommandTest extends ParentTester
 
     protected function setUp()
     {
-        ParentTester::build(AddCommand::class,"add");
+        ParentTester::build(SubstractCommand::class,"substract");
     }
 
     public function testTwoSameNumber(): void
