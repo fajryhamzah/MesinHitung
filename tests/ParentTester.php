@@ -17,8 +17,10 @@ class ParentTester extends TestCase
         $container = new Container();
         $dispatcher = new Dispatcher();
         $application = new Application($container, $dispatcher, '0.1');
+        $obj = new $obj;
+        $obj->log_command = false;
         $application->setName('Calculator');
-        $application->add(new $obj);
+        $application->add($obj);
         $this->command = $application->find($command);
         $this->commandTester = new CommandTester($this->command);   
     }

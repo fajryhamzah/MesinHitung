@@ -40,7 +40,7 @@ abstract class ParentCommand extends Command
     /**
      * @var bool
      */
-    protected $log_command = true;
+    public $log_command = true;
 
     public function __construct()
     {
