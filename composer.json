@@ -11,10 +11,18 @@
         "illuminate/events": "5.8.*",
         "illuminate/support": "5.8.*"
     },
+    "require-dev": {
+        "phpunit/phpunit": "^7"
+    },
     "autoload": {
         "psr-4": {
             "Jakmall\\Recruitment\\Calculator\\": "src/"
         }
+    },
+    "autoload-dev": {
+        "files": [
+            "./tests/ParentTester.php"
+        ]
     },
     "config": {
         "preferred-install": "dist",
