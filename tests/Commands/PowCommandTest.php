@@ -33,7 +33,8 @@ final class PowCommandTest extends ParentTester
 
     public function testEmptyNumber(): void
     {   
-        $this->assertEquals('Argument needed',$this->rawCommand(array('base','exp')));
+        $this->expectExceptionMessage("Not enough arguments");
+        $this->rawCommand(array('base','exp'));
     }
 
 }
