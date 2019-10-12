@@ -31,18 +31,39 @@ abstract class ParentCommand extends Command
      */
     protected $passive_verb;
 
+    /**
+     * @var array
+     */
+    protected $input_arg;
+
     public function __construct()
     {
         
         $commandVerb = $this->getCommandVerb();
 
-        $this->signature = sprintf(
-            '%s {numbers* : The numbers to be %s}',
-            $commandVerb,
-            $this->getCommandPassiveVerb()
-        );
-        $this->description = sprintf('%s all given Numbers', ucfirst($commandVerb));
+        if(!$this->signature)
+            $this->signature = sprintf(
+                '%s {numbers* : The numbers to be %s}',
+                $commandVerb,
+                $this->getCommandPassiveVerb()
+            );
+
+        if(!$this->description)
+            $this->description = sprintf('%s all given Numbers', ucfirst($commandVerb));
+        
         parent::__construct();
+    }
+
+    protected function addSignature($args,$detail):void
+    {
+        $signature = sprintf("{%s : %s}",$args,$detail);
+
+        if($this->signature){
+            $this->signature = $this->signature." ".$signature;
+        }
+        else{
+            $this->signature = sprintf("%s %s",$this->getCommandVerb(),$signature);
+        }
     }
 
     protected function getCommandVerb(): string
@@ -70,9 +91,19 @@ abstract class ParentCommand extends Command
         $this->comment(sprintf('%s = %s', $description, $result));
     }
 
+
     protected function getInput(): array
     {
-        return $this->argument('numbers');
+        if(!empty($this->input_arg)){
+            $input = array();
+            foreach($this->input_arg as $arg){
+                $input[] = $this->argument($arg);
+            }
+
+            return $input;
+        }
+
+        return $this->argument("numbers");
     }
 
     protected function generateCalculationDescription(array $numbers): string
