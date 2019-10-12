@@ -89,7 +89,7 @@ abstract class ParentCommand extends Command
     }
 
     protected function calculateAll(array $numbers){
-        $sum = 0;
+        $sum = array_shift($numbers);
 
         foreach($numbers as $number){
             $sum = $this->calculate($sum,$number);

@@ -27,7 +27,7 @@ final class SubstractCommandTest extends ParentTester
 
     public function testNegativeNumber(): void
     {   
-        $this->assertEquals('-1 - 5 = -5',$this->rawCommand(array('numbers' => array(-1,5))));
+        $this->assertEquals('-1 - 5 = -6',$this->rawCommand(array('numbers' => array(-1,5))));
         $this->assertEquals('21 - -11 = 32',$this->rawCommand(array('numbers' => array(21,-11))));
     }
 
